@@ -73,6 +73,7 @@
   <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Localizacion\Mensajes.es.resx" />
+    <EmbeddedResource Include="Localizacion\Mensajes.it.resx" />
     <EmbeddedResource Include="Localizacion\Mensajes.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Mensajes.Designer.cs</LastGenOutput>

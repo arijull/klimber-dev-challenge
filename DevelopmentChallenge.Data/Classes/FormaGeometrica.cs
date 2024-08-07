@@ -39,6 +39,7 @@ namespace DevelopmentChallenge.Data.Classes
 
         public const int Castellano = 1;
         public const int Ingles = 2;
+        public const int Italiano = 3;
 
         #endregion
 
@@ -70,15 +71,18 @@ namespace DevelopmentChallenge.Data.Classes
 
         public static string Imprimir(List<FormaGeometrica> formas, int idioma)
         {
-            if (idioma == Castellano)
+            switch (idioma)
             {
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es");
+                case Castellano:
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es");
+                    break;
+                case Italiano:
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("it");
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en");
-            }
-
+            
             var sb = new StringBuilder();
 
             if (!formas.Any())
