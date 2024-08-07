@@ -5,7 +5,7 @@ namespace DevelopmentChallenge.Data.Classes.Negocio.Estrategias
 {
     public class Circulo : FiguraGeometricaEquilatera
     {
-        public Circulo(decimal ancho) : base(ancho)
+        public Circulo(decimal diametro) : base(diametro)
         {
             Tipo = TipoDeForma.Circulo;
             OrdenDeImpresion = 5;

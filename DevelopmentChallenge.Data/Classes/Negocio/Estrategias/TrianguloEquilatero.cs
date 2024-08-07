@@ -5,7 +5,7 @@ namespace DevelopmentChallenge.Data.Classes.Negocio.Estrategias
 {
     public class TrianguloEquilatero : FiguraGeometricaEquilatera
     {
-        public TrianguloEquilatero(decimal ancho) : base(ancho)
+        public TrianguloEquilatero(decimal lado) : base(lado)
         {
             Tipo = TipoDeForma.TrianguloEquilatero;
             OrdenDeImpresion = 10;
