@@ -144,6 +144,9 @@
   <data name="ReporteDeFormas" xml:space="preserve">
     <value>Rapporto di forme</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>TOTALE</value>
+  </data>
   <data name="Trapecio" xml:space="preserve">
     <value>Trapezio</value>
   </data>

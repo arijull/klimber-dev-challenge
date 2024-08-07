@@ -142,6 +142,15 @@ namespace DevelopmentChallenge.Data.Localizacion {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TOTAL.
+        /// </summary>
+        internal static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trapezoid.
         /// </summary>
         internal static string Trapecio {

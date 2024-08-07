@@ -48,9 +48,10 @@
     <Compile Include="Classes\FormaGeometrica.cs" />
     <Compile Include="Classes\Negocio\Estrategias\Circulo.cs" />
     <Compile Include="Classes\Negocio\Estrategias\Cuadrado.cs" />
+    <Compile Include="Classes\Negocio\Estrategias\FactoriaFiguraGeometrica.cs" />
     <Compile Include="Classes\Negocio\Estrategias\Trapecio.cs" />
     <Compile Include="Classes\Negocio\Estrategias\TrianguloEquilatero.cs" />
-    <Compile Include="Classes\Negocio\FiguraGeometrica.cs" />
+    <Compile Include="Classes\Negocio\Estrategias\FiguraGeometrica.cs" />
     <Compile Include="Classes\Negocio\Estrategias\FiguraGeometricaEquilatera.cs" />
     <Compile Include="Classes\Negocio\Impresion\CirculoTotalizado.cs" />
     <Compile Include="Classes\Negocio\Impresion\CuadradoTotalizado.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Classes\Negocio\Impresion\IImprimible.cs" />
     <Compile Include="Classes\Negocio\Impresion\TrapecioTotalizado.cs" />
     <Compile Include="Classes\Negocio\Impresion\TrianguloEquilateroTotalizado.cs" />
+    <Compile Include="Enums\Idioma.cs" />
     <Compile Include="Enums\TipoDeForma.cs" />
     <Compile Include="Localizacion\Mensajes.Designer.cs">
       <AutoGen>True</AutoGen>

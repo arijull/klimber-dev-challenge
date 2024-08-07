@@ -1,6 +1,6 @@
 ﻿using DevelopmentChallenge.Data.Enums;
 
-namespace DevelopmentChallenge.Data.Classes.Negocio
+namespace DevelopmentChallenge.Data.Classes.Negocio.Estrategias
 {
     public abstract class FiguraGeometrica
     {

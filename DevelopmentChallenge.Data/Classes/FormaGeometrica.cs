@@ -11,16 +11,14 @@
  * Una vez finalizado, hay que subir el código a un repo GIT y ofrecernos la URL para que podamos utilizar la nueva versión :).
  */
 
-using DevelopmentChallenge.Data.Classes.Negocio;
 using DevelopmentChallenge.Data.Classes.Negocio.Estrategias;
+using DevelopmentChallenge.Data.Classes.Negocio.Impresion;
 using DevelopmentChallenge.Data.Enums;
-using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Globalization;
-using DevelopmentChallenge.Data.Classes.Negocio.Impresion;
 
 namespace DevelopmentChallenge.Data.Classes
 {
@@ -43,46 +41,22 @@ namespace DevelopmentChallenge.Data.Classes
 
         #endregion
 
-        private FiguraGeometrica _implementacion;
+        public decimal[] Lados { get; internal set; }
+        public int Tipo { get; internal set; }
 
+        //El constructor sigue teniendo casi la misma firma, de modo tal, de mantener la interfaz de los tests(y de cualquier consumidor externo) igual
+        //el segundo parametro ahora es de tipo params decimal[] para soportar figuras con dimensiones no equilateras
         public FormaGeometrica(int tipo, params decimal[] lados)
         {
-            var ancho = lados.First();
-
-            TipoDeForma TipoForma = (TipoDeForma)tipo;
-            switch (TipoForma)
-            {
-                case TipoDeForma.Cuadrado:
-                    _implementacion = new Cuadrado(ancho);
-                    break;
-                case TipoDeForma.TrianguloEquilatero:
-                    _implementacion = new TrianguloEquilatero(ancho);
-                    break;
-                case TipoDeForma.Circulo:
-                    _implementacion = new Circulo(ancho);
-                    break;
-                case TipoDeForma.Trapecio:
-                    _implementacion = new Trapecio(lados[0], lados[1], lados[2], lados[3], lados[4]);
-                    break;
-                default:
-                    break;
-            }
+            Tipo = tipo;
+            Lados = lados;
         }
 
+        //Imprimir sigue teniendo la misma forma provista originalmente, de modo tal, de mantener la interfaz de los tests(y de cualquier consumidor externo) igual
         public static string Imprimir(List<FormaGeometrica> formas, int idioma)
         {
-            switch (idioma)
-            {
-                case Castellano:
-                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es");
-                    break;
-                case Italiano:
-                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("it");
-                    break;
-                default:
-                    break;
-            }
-            
+            EstablecerIdiomaDeImpresion(idioma);
+
             var sb = new StringBuilder();
 
             if (!formas.Any())
@@ -95,31 +69,55 @@ namespace DevelopmentChallenge.Data.Classes
                 // HEADER
                 sb.Append($"<h1>{Localizacion.Mensajes.ReporteDeFormas}</h1>");
 
-                var groupByTipo = formas
-                    .GroupBy(f => f._implementacion.Tipo)
-                    .Select(g => FactoriaImpresiones.CrearFiguraParaImprimir(
-                        g.First()._implementacion.Tipo,
-                        g.First()._implementacion.OrdenDeImpresion,
+                //Convertimos la FormaGeometrica en un tipo de FiguraGeometrica son su estrategia especifica para calcular area y perimetro
+                var formasEstrategia = formas.Select(f => FactoriaFiguraGeometrica.CrearFiguraParaCalculo(f.Tipo, f.Lados)).ToList();
+
+                var groupByTipo = formasEstrategia
+                    .GroupBy(f => f.Tipo)
+                    .Select(g => FactoriaImpresiones.CrearFiguraParaImprimir( //se mapea el group by a clases especificas de impresion para cada forma
+                        g.First().Tipo,
+                        g.First().OrdenDeImpresion,
                         g.Count(),
-                        g.Sum(c => c._implementacion.Area),
-                        g.Sum(c => c._implementacion.Perimetro))
+                        g.Sum(c => c.Area),
+                        g.Sum(c => c.Perimetro))
                     )
                     .OrderBy(f => f.Orden)
                     .ToList();
 
                 foreach (var item in groupByTipo)
                 {
-                    sb.Append(item.Imprimir());
+                    sb.Append(item.Imprimir()); //Cada forma totalizada sabe cómo imprimirse
                 }
 
                 // FOOTER
-                sb.Append("TOTAL:<br/>");
+                sb.Append($"{Localizacion.Mensajes.Total}:<br/>");
                 sb.Append(groupByTipo.Sum(r => r.Cantidad) + " " + Localizacion.Mensajes.Formas + " ");
                 sb.Append($"{Localizacion.Mensajes.Perimetro} {groupByTipo.Sum(r => r.PerimetroTotal).ToString("#.##")} ");
                 sb.Append($"{Localizacion.Mensajes.Area} {groupByTipo.Sum(r => r.AreaTotal).ToString("#.##")}");
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Setea el Thread.CurrentThread.CurrentUICulture para seleccionar el resx Mensajes
+        /// </summary>
+        /// <param name="idioma">int const de la clase FormaGeometrica</param>
+        private static void EstablecerIdiomaDeImpresion(int idioma)
+        {
+            Idioma idiomaEnum = (Idioma)idioma; //ToDo: validar si el int tipo no existe en el enum
+            switch (idiomaEnum)
+            {
+                case Idioma.Castellano:
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es");
+                    break;
+                case Idioma.Italiano:
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("it");
+                    break;
+                case Idioma.Ingles:
+                default:
+                    break;
+            }
         }
     }
 }
