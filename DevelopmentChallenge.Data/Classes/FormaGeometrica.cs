@@ -45,7 +45,7 @@ namespace DevelopmentChallenge.Data.Classes
         public int Tipo { get; internal set; }
 
         //El constructor sigue teniendo casi la misma firma, de modo tal, de mantener la interfaz de los tests(y de cualquier consumidor externo) igual
-        //el segundo parametro ahora es de tipo params decimal[] para soportar figuras con dimensiones no equilateras
+        //El segundo parametro ahora es de tipo params decimal[] para soportar figuras con dimensiones no equilateras (esto no modifica la interfaz con los tests)
         public FormaGeometrica(int tipo, params decimal[] lados)
         {
             Tipo = tipo;
@@ -69,7 +69,7 @@ namespace DevelopmentChallenge.Data.Classes
                 // HEADER
                 sb.Append($"<h1>{Localizacion.Mensajes.ReporteDeFormas}</h1>");
 
-                //Convertimos la FormaGeometrica en un tipo de FiguraGeometrica son su estrategia especifica para calcular area y perimetro
+                //Se convierte la FormaGeometrica en un tipo de FiguraGeometrica con su estrategia especifica para calcular area y perimetro
                 var formasEstrategia = formas.Select(f => FactoriaFiguraGeometrica.CrearFiguraParaCalculo(f.Tipo, f.Lados)).ToList();
 
                 var groupByTipo = formasEstrategia
